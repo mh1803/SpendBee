@@ -1,0 +1,72 @@
+.hero {
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  background-color: #fffdf5;
+  background-image: url("/images/hero.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.greeting {
+  text-align: center;
+  color: #23212c;
+  padding: 0 2rem;
+}
+
+.title {
+  font-family: "Fredoka One", cursive;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.description {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.primaryBtn {
+  background-color: #f9b83c;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.primaryBtn:hover {
+  transform: scale(1.05);
+}
+
+.secondaryBtn {
+  background-color: transparent;
+  border: 2px solid #f9b83c;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.secondaryBtn:hover {
+  background-color: #f9b83c;
+  color: #23212c;
+  transform: scale(1.05);
+}
