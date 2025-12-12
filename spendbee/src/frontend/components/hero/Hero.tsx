@@ -5,9 +5,6 @@ export function Hero() {
     <section id="home" className={styles.hero}>
       <div className={styles.greeting}>
         <h1 className={styles.title}>Take Control of Your Money</h1>
-        <h2 className={styles.subtitle}>
-          SpendBee: Effortless Bank Statement Analysis
-        </h2>
         <p className={styles.description}>
           Instantly understand your spending habits, track your expenses, and
           make smarter financial decisions.
