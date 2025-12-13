@@ -26,6 +26,7 @@ export interface Transaction {
 }
 
 export interface SpendBeeAnalysis {
+  currency: string;
   initial_balance: number;
   final_balance: number;
   total_income: number;
