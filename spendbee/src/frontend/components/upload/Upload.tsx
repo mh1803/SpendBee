@@ -4,6 +4,7 @@ import { Dashboard } from "../dashboard/Dashboard";
 
 export function Upload() {
   const [file, setFile] = useState<File | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [analysis, setAnalysis] = useState<any>(null);
 
@@ -34,6 +35,10 @@ export function Upload() {
   const handleUpload = async () => {
     if (!file) return;
 
+    if (isLoading) return;
+
+    setIsLoading(true);
+
     try {
       const formData = new FormData();
       formData.append("file", file);
@@ -49,12 +54,14 @@ export function Upload() {
         setAnalysis(null);
       } else {
         setAnalysis(data.analysis);
+        setIsLoading(false);
         setError("");
       }
     } catch (err) {
       console.error(err);
       setError("Failed to upload file");
       setAnalysis(null);
+      setIsLoading(false);
     }
   };
 
@@ -81,7 +88,7 @@ export function Upload() {
       {error && <p className={styles.error}>{error}</p>}
 
       <button onClick={handleUpload} disabled={!file}>
-        Upload
+        {isLoading ? "Loading..." : "Upload"}
       </button>
 
       {/* Render Dashboard */}
