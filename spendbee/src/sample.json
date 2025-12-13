@@ -1,86 +1,116 @@
 {
   "initial_balance": 40000,
-  "final_balance": 44079.83,
-  "total_income": 5474,
-  "total_spending": 1395.17,
-  "summary": "Your financial health looks quite good! You received multiple income deposits and kept your spending under control, resulting in a noticeable increase in savings this month.",
+  "final_balance": 44620.75,
+  "total_income": 7000,
+  "total_spending": 1380.25,
+  "summary": "Excellent month! You received multiple income deposits, kept discretionary spending low, and maintained regular saving habits, resulting in a healthy increase in your balance.",
   "insights": [
-    "Total income for the month (£5474) was significantly higher than total spending (£1395.17).",
-    "Multiple direct deposits indicate a steady and predictable income stream.",
-    "Spending at petrol stations occurred twice, suggesting regular travel.",
-    "Monthly recurring expenses like rent (£987.33) and insurance (£45) are being managed consistently."
+    "Total income (£7000) far exceeded total spending (£1380.25), supporting strong savings growth.",
+    "Multiple salary and freelance payments indicate stable and diverse income streams.",
+    "Frequent small spending on groceries and dining shows controlled daily expenses.",
+    "Recurring bills and insurance payments are being managed consistently without issues."
   ],
   "tips": [
-    "Consider minimizing petrol station visits to reduce fuel expenses further.",
-    "Allocate a portion of your biweekly income to a dedicated savings account to maintain growth.",
-    "Review recurring expenses like phone bills and insurance to identify potential savings opportunities."
+    "Consider setting aside a fixed portion of freelance income for long-term savings or investments.",
+    "Review dining expenses to see if small reductions could free up extra funds.",
+    "Track recurring subscriptions to ensure none are unused or unnecessary."
   ],
   "transactions": [
     {
-      "date": "2019-02-01",
-      "description": "Card payment - High St Petrol Station",
-      "amount": -24.5,
-      "category": "transport"
-    },
-    {
-      "date": "2019-02-01",
-      "description": "Direct debit - Green Mobile Phone Bill",
-      "amount": -20,
-      "category": "bills"
-    },
-    {
-      "date": "2019-02-01",
-      "description": "Direct Deposit - YourJob BiWeekly Payment",
-      "amount": 2575,
+      "date": "2025-11-01",
+      "description": "Direct Deposit - Acme Corp Salary",
+      "amount": 3000,
       "category": "salary"
     },
     {
-      "date": "2019-02-03",
-      "description": "Cash Withdrawal - YourBank, Anytown",
-      "amount": -30,
-      "category": "other"
+      "date": "2025-11-02",
+      "description": "Freelance Payment - Web Design Project",
+      "amount": 1200,
+      "category": "freelance"
     },
     {
-      "date": "2019-02-04",
-      "description": "Direct Deposit - YourBank, Anytown",
-      "amount": 2575,
-      "category": "salary"
+      "date": "2025-11-03",
+      "description": "Card Payment - SuperMart Groceries",
+      "amount": -150.75,
+      "category": "groceries"
     },
     {
-      "date": "2019-02-17",
-      "description": "Card payment - High St Petrol Station",
-      "amount": -15,
-      "category": "transport"
-    },
-    {
-      "date": "2019-02-17",
-      "description": "Direct Debit - Home Insurance",
-      "amount": -45,
-      "category": "bills"
-    },
-    {
-      "date": "2019-02-18",
-      "description": "YourJob BiWeekly Payment",
-      "amount": 2575,
-      "category": "salary"
-    },
-    {
-      "date": "2019-02-18",
-      "description": "Cash Withdrawal - RandomBank, Randomford",
-      "amount": -40,
-      "category": "other"
-    },
-    {
-      "date": "2019-02-24",
-      "description": "Direct Deposit - Anytown's Jewelers",
-      "amount": 150,
-      "category": "other"
-    },
-    {
-      "date": "2019-02-28",
-      "description": "Monthly Apartment Rent",
+      "date": "2025-11-04",
+      "description": "Direct Debit - Rent",
       "amount": -987.33,
       "category": "bills"
+    },
+    {
+      "date": "2025-11-05",
+      "description": "Card Payment - Italian Bistro",
+      "amount": -45,
+      "category": "dining"
+    },
+    {
+      "date": "2025-11-06",
+      "description": "Gift Received - Birthday from Friend",
+      "amount": 200,
+      "category": "gifts"
+    },
+    {
+      "date": "2025-11-07",
+      "description": "Card Payment - Local Gym",
+      "amount": -55,
+      "category": "health"
+    },
+    {
+      "date": "2025-11-08",
+      "description": "Direct Deposit - Freelance App Development",
+      "amount": 1600,
+      "category": "freelance"
+    },
+    {
+      "date": "2025-11-10",
+      "description": "Card Payment - City Transport Monthly Pass",
+      "amount": -75,
+      "category": "transport"
+    },
+    {
+      "date": "2025-11-11",
+      "description": "Card Payment - Bookstore",
+      "amount": -30,
+      "category": "leisure"
+    },
+    {
+      "date": "2025-11-12",
+      "description": "Refund - Online Purchase",
+      "amount": 100,
+      "category": "refunds"
+    },
+    {
+      "date": "2025-11-15",
+      "description": "Card Payment - Electronics Store",
+      "amount": -87,
+      "category": "shopping"
+    },
+    {
+      "date": "2025-11-18",
+      "description": "Direct Deposit - Part-time Job",
+      "amount": 400,
+      "category": "salary"
+    },
+    {
+      "date": "2025-11-20",
+      "description": "Card Payment - Coffee Shop",
+      "amount": -20,
+      "category": "dining"
+    },
+    {
+      "date": "2025-11-22",
+      "description": "Card Payment - Pharmacy",
+      "amount": -45.42,
+      "category": "health"
+    },
+    {
+      "date": "2025-11-25",
+      "description": "Cash Withdrawal - ATM",
+      "amount": -50,
+      "category": "other"
     }
   ]
 }
