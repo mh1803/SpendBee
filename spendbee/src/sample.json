@@ -1,0 +1,86 @@
+{
+  "initial_balance": 40000,
+  "final_balance": 44079.83,
+  "total_income": 5474,
+  "total_spending": 1395.17,
+  "summary": "Your financial health looks quite good! You received multiple income deposits and kept your spending under control, resulting in a noticeable increase in savings this month.",
+  "insights": [
+    "Total income for the month (£5474) was significantly higher than total spending (£1395.17).",
+    "Multiple direct deposits indicate a steady and predictable income stream.",
+    "Spending at petrol stations occurred twice, suggesting regular travel.",
+    "Monthly recurring expenses like rent (£987.33) and insurance (£45) are being managed consistently."
+  ],
+  "tips": [
+    "Consider minimizing petrol station visits to reduce fuel expenses further.",
+    "Allocate a portion of your biweekly income to a dedicated savings account to maintain growth.",
+    "Review recurring expenses like phone bills and insurance to identify potential savings opportunities."
+  ],
+  "transactions": [
+    {
+      "date": "2019-02-01",
+      "description": "Card payment - High St Petrol Station",
+      "amount": -24.5,
+      "category": "transport"
+    },
+    {
+      "date": "2019-02-01",
+      "description": "Direct debit - Green Mobile Phone Bill",
+      "amount": -20,
+      "category": "bills"
+    },
+    {
+      "date": "2019-02-01",
+      "description": "Direct Deposit - YourJob BiWeekly Payment",
+      "amount": 2575,
+      "category": "salary"
+    },
+    {
+      "date": "2019-02-03",
+      "description": "Cash Withdrawal - YourBank, Anytown",
+      "amount": -30,
+      "category": "other"
+    },
+    {
+      "date": "2019-02-04",
+      "description": "Direct Deposit - YourBank, Anytown",
+      "amount": 2575,
+      "category": "salary"
+    },
+    {
+      "date": "2019-02-17",
+      "description": "Card payment - High St Petrol Station",
+      "amount": -15,
+      "category": "transport"
+    },
+    {
+      "date": "2019-02-17",
+      "description": "Direct Debit - Home Insurance",
+      "amount": -45,
+      "category": "bills"
+    },
+    {
+      "date": "2019-02-18",
+      "description": "YourJob BiWeekly Payment",
+      "amount": 2575,
+      "category": "salary"
+    },
+    {
+      "date": "2019-02-18",
+      "description": "Cash Withdrawal - RandomBank, Randomford",
+      "amount": -40,
+      "category": "other"
+    },
+    {
+      "date": "2019-02-24",
+      "description": "Direct Deposit - Anytown's Jewelers",
+      "amount": 150,
+      "category": "other"
+    },
+    {
+      "date": "2019-02-28",
+      "description": "Monthly Apartment Rent",
+      "amount": -987.33,
+      "category": "bills"
+    }
+  ]
+}

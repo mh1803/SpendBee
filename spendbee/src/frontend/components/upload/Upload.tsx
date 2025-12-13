@@ -1,12 +1,14 @@
 import { useState, type ChangeEvent } from "react";
 import styles from "./Upload.module.css";
 import { Dashboard } from "../dashboard/Dashboard";
+import type { SpendBeeAnalysis } from "../../../types/analysis";
+import sampleAnalysis from "../../../sample.json";
 
 export function Upload() {
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [analysis, setAnalysis] = useState<any>(null);
+  const [analysis, setAnalysis] = useState<SpendBeeAnalysis | null>(null);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -33,11 +35,10 @@ export function Upload() {
   };
 
   const handleUpload = async () => {
-    if (!file) return;
-
-    if (isLoading) return;
+    if (!file || isLoading) return;
 
     setIsLoading(true);
+    setError("");
 
     try {
       const formData = new FormData();
@@ -49,50 +50,70 @@ export function Upload() {
       });
 
       const data = await response.json();
-      if (data.error) {
-        setError(data.error);
-        setAnalysis(null);
-      } else {
-        setAnalysis(data.analysis);
-        setIsLoading(false);
-        setError("");
+
+      if (!response.ok) {
+        throw new Error(data.error || "Upload failed");
       }
+
+      setAnalysis(data.analysis);
     } catch (err) {
       console.error(err);
       setError("Failed to upload file");
       setAnalysis(null);
+    } finally {
       setIsLoading(false);
     }
   };
 
+  const handleSeeExample = () => {
+    setAnalysis(sampleAnalysis as SpendBeeAnalysis);
+    setFile(null);
+    setError("");
+  };
+
   return (
-    <div className={styles.UploadSection}>
-      <h2>Upload a CSV or PDF file</h2>
+    <div className={styles.UploadContainer}>
+      {/* Decorative Layers */}
+      <div className={styles.LayerBackground}></div>
+      <div className={styles.LayerGlow}></div>
 
-      <input
-        id="fileInput"
-        type="file"
-        accept=".csv, application/pdf"
-        onChange={handleFileChange}
-      />
+      {/* Upload Section */}
+      <div className={styles.UploadSection}>
+        <h2>Upload a CSV or PDF file</h2>
 
-      {file && (
-        <div className={styles.fileInfo}>
-          <p>Selected file: {file.name}</p>
-          <button onClick={handleRemove} className={styles.removeBtn}>
-            Remove
+        <input
+          id="fileInput"
+          type="file"
+          accept=".csv, application/pdf"
+          onChange={handleFileChange}
+        />
+
+        {file && (
+          <div className={styles.fileInfo}>
+            <p>Selected file: {file.name}</p>
+            <button onClick={handleRemove} className={styles.removeBtn}>
+              Remove
+            </button>
+          </div>
+        )}
+
+        {error && <p className={styles.error}>{error}</p>}
+
+        <div className={styles.ButtonGroup}>
+          <button onClick={handleUpload} disabled={!file || isLoading}>
+            {isLoading ? "Loading..." : "Upload"}
+          </button>
+
+          <button onClick={handleSeeExample} className={styles.exampleBtn}>
+            See Example
           </button>
         </div>
-      )}
+      </div>
 
-      {error && <p className={styles.error}>{error}</p>}
-
-      <button onClick={handleUpload} disabled={!file}>
-        {isLoading ? "Loading..." : "Upload"}
-      </button>
-
-      {/* Render Dashboard */}
-      {analysis && <Dashboard analysis={analysis} />}
+      {/* Dashboard Section */}
+      <div className={styles.DashboardSection}>
+        {analysis && <Dashboard analysis={analysis} />}
+      </div>
     </div>
   );
 }
