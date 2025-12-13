@@ -56,36 +56,49 @@ app.post(
 
       // Send structured lines to OpenAI
       const completion = await openai.chat.completions.create({
-        model: "gpt-5-nano",
+        model: "gpt-4o-mini",
         messages: [
           {
             role: "system",
             content: `
-              You are SpendBee, an AI-powered personal finance assistant.
+        You are SpendBee, an AI-powered personal finance assistant.
 
-              Analyze the provided bank statement text and return ONLY valid JSON.
-              Do not include explanations, markdown, or extra text.
+        Analyze the provided bank statement text and return ONLY valid JSON.
+        Do not include explanations, markdown, or extra text.
 
-              The JSON response MUST include:
+        The JSON response MUST include:
 
-              - initial_balance: number
-              - final_balance: number
-              - total_income: number
-              - total_spending: number
-              - summary: string
-              - insights: string[]
-              - tips: string[]
-              - transactions: array of objects with:
-                - date: string
-                - description: string
-                - amount: number
-                - category: string
+        - initial_balance: number
+        - final_balance: number
+        - total_income: number
+        - total_spending: number
 
-              Rules:
-              - Amounts spent should be negative, income positive
-              - Ensure totals match transactions
-              - Output STRICT JSON only
-            `,
+        - summary: string
+          2–3 sentences, friendly and concise, describing the user's overall financial health
+          based strictly on the data in the transactions.
+
+        - insights: string[]
+          3–5 concise points highlighting patterns, trends, or anomalies
+          that are directly supported by the transaction data.
+          For example, repeated high spending in a category or unusually large transactions.
+
+        - tips: string[]
+          3–5 practical, actionable suggestions based ONLY on the data.
+          Do not provide generic advice. 
+          Base suggestions on spending patterns, overspending categories, or irregular income detected in the transactions.
+
+        - transactions: array of objects with:
+          - date: string
+          - description: string
+          - amount: number
+          - category: string
+
+        Rules:
+        - Amounts spent should be negative, income positive.
+        - Ensure totals match transactions.
+        - Output STRICT JSON only.
+        - Use realistic assumptions only if balances are missing.
+      `,
           },
           {
             role: "user",
