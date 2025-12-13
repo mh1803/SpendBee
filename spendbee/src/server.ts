@@ -1,7 +1,8 @@
 import express, { type Request, type Response } from "express";
 import multer from "multer";
 import OpenAI from "openai";
-import { parse as csvParse } from "csv-parse/sync";
+
+import type { SpendBeeAnalysis } from "./types/analysis";
 
 // Express app
 const app = express();
@@ -18,15 +19,6 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-// Helper: parse CSV into text for AI
-function parseCSV(buffer: Buffer) {
-  const records = csvParse(buffer.toString("utf-8"), {
-    columns: true,
-    skip_empty_lines: true,
-  });
-  return JSON.stringify(records);
-}
-
 // Upload endpoint
 app.post(
   "/api/upload",
@@ -40,21 +32,19 @@ app.post(
 
       // CSV
       if (file.mimetype === "text/csv") {
-        // Convert buffer to string
         const csvText = file.buffer.toString("utf-8");
-        // Split into lines
         const lines = csvText
           .split("\n")
           .map((line) => line.trim())
           .filter(Boolean);
         fileContent = lines.join("\n");
       }
+
       // PDF
       else if (file.mimetype === "application/pdf") {
         const { PDFParse } = await import("pdf-parse");
         const parser = new PDFParse({ data: file.buffer });
         const result = await parser.getText();
-        // Split PDF text into lines
         const lines = result.text
           .split("\n")
           .map((line) => line.trim())
@@ -71,19 +61,30 @@ app.post(
           {
             role: "system",
             content: `
-You are SpendBee, a personal finance assistant.
-Analyze this bank statement text and return ONLY valid JSON with:
-- initial_balance
-- final_balance
-- total_income
-- total_spending
-- transactions: array with date, description, amount, category
+              You are SpendBee, an AI-powered personal finance assistant.
 
-Categories:
-- salary, freelance, gifts, refunds, other
-- groceries, dining, bills, transport, health, shopping, leisure, other
+              Analyze the provided bank statement text and return ONLY valid JSON.
+              Do not include explanations, markdown, or extra text.
 
-Output strict JSON only. No extra text.
+              The JSON response MUST include:
+
+              - initial_balance: number
+              - final_balance: number
+              - total_income: number
+              - total_spending: number
+              - summary: string
+              - insights: string[]
+              - tips: string[]
+              - transactions: array of objects with:
+                - date: string
+                - description: string
+                - amount: number
+                - category: string
+
+              Rules:
+              - Amounts spent should be negative, income positive
+              - Ensure totals match transactions
+              - Output STRICT JSON only
             `,
           },
           {
@@ -93,11 +94,12 @@ Output strict JSON only. No extra text.
         ],
       });
 
-      const analysisText = completion.choices[0].message?.content || "";
-      let analysisJSON = null;
+      const analysisText = completion.choices[0].message?.content ?? "";
+
+      let analysisJSON: SpendBeeAnalysis;
 
       try {
-        analysisJSON = JSON.parse(analysisText);
+        analysisJSON = JSON.parse(analysisText) as SpendBeeAnalysis;
       } catch (err) {
         console.error("Failed to parse AI response as JSON:", err);
         return res.status(500).json({ error: "AI returned invalid JSON" });
