@@ -31,7 +31,7 @@ export function Navbar() {
 
       {/* Sidebar */}
       <nav className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}>
-        {/* Close button for mobile */}
+        {/* Mobile close button */}
         <button
           className={styles.closeButton}
           onClick={closeSidebar}
@@ -65,7 +65,6 @@ export function Navbar() {
           </li>
         </ul>
 
-        {/* Footer / Optional */}
         <div className={styles.footer}>
           <p>&copy; 2025 SpendBee</p>
         </div>
