@@ -6,26 +6,36 @@ export function About() {
       <div className={styles.features}>
         <ul>
           <li>
-            <strong>AI-Powered Insights:</strong> Spend Bee automatically
-            analyses your bank statements, detects spending patterns, and
-            highlights where your money truly goes.
+            <h3>Simple & Fast</h3>
+            <p>
+              Upload your statement and receive meaningful insights in seconds
+              through a clean, beginner-friendly interface.
+            </p>
           </li>
 
           <li>
-            <strong>Smart Categorisation:</strong> Your transactions are
-            instantly sorted into clear categories like food, travel, bills,
-            subscriptions, and more — no manual work.
+            <h3>AI-Powered Insights</h3>
+            <p>
+              Spend Bee intelligently analyses your bank statements to uncover
+              spending patterns and reveal exactly where your money goes.
+            </p>
           </li>
 
           <li>
-            <strong>Privacy First:</strong> Spend Bee processes statements
-            securely and never stores your data — analysis happens instantly and
-            privately.
+            <h3>Smart Categorisation</h3>
+            <p>
+              Transactions are automatically organised into clear categories
+              such as groceries, transport and shopping — no manual effort
+              required.
+            </p>
           </li>
 
           <li>
-            <strong>Simple & Fast:</strong> Upload your statement and get your
-            insights in just seconds with a clean, beginner-friendly interface.
+            <h3>Privacy First</h3>
+            <p>
+              Your data is processed securely and never stored. All analysis
+              happens instantly and remains completely private.
+            </p>
           </li>
         </ul>
       </div>
