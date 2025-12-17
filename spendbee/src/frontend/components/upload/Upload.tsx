@@ -73,10 +73,6 @@ export function Upload() {
 
   return (
     <div className={styles.UploadContainer}>
-      {/* Decorative Layers */}
-      <div className={styles.LayerBackground}></div>
-      <div className={styles.LayerGlow}></div>
-
       {/* Upload Section */}
       <div className={styles.UploadSection}>
         <h2>Upload a CSV or PDF file</h2>
@@ -99,20 +95,18 @@ export function Upload() {
 
         {error && <p className={styles.error}>{error}</p>}
 
-        <div className={styles.ButtonGroup}>
-          <button onClick={handleUpload} disabled={!file || isLoading}>
-            {isLoading ? "Loading..." : "Upload"}
-          </button>
+        <button onClick={handleUpload} disabled={!file || isLoading}>
+          {isLoading ? "Loading..." : "Upload"}
+        </button>
 
-          <button onClick={handleSeeExample} className={styles.exampleBtn}>
-            See Example
-          </button>
-        </div>
+        <button onClick={handleSeeExample} className={styles.exampleBtn}>
+          See Example
+        </button>
       </div>
 
       {/* Dashboard Section */}
       <div className={styles.DashboardSection}>
-        {analysis && <Dashboard analysis={analysis} />}
+        <Dashboard analysis={analysis} />
       </div>
     </div>
   );
