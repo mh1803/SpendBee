@@ -56,8 +56,7 @@ export function Upload() {
       }
 
       setAnalysis(data.analysis);
-    } catch (err) {
-      console.error(err);
+    } catch {
       setError("Failed to upload file");
       setAnalysis(null);
     } finally {
@@ -74,40 +73,72 @@ export function Upload() {
   return (
     <div className={styles.UploadContainer}>
       {/* Upload Section */}
-      <div className={styles.UploadSection}>
-        <h2>Upload a CSV or PDF file</h2>
+      <section className={styles.UploadSection}>
+        <div className={styles.uploadCard}>
+          <h2>Upload your bank statement</h2>
+          <p className={styles.subtitle}>
+            CSV or PDF • Secure • Processed instantly
+          </p>
 
-        <input
-          id="fileInput"
-          type="file"
-          accept=".csv, application/pdf"
-          onChange={handleFileChange}
-        />
+          <label className={styles.dropzone}>
+            <input
+              id="fileInput"
+              type="file"
+              accept=".csv, application/pdf"
+              onChange={handleFileChange}
+              hidden
+            />
+            <div className={styles.dropContent}>
+              <span className={styles.icon}>📄</span>
+              <p>
+                <strong>Click to upload</strong> or drag & drop
+              </p>
+              <span className={styles.hint}>CSV or PDF only</span>
+            </div>
+          </label>
 
-        {file && (
-          <div className={styles.fileInfo}>
-            <p>Selected file: {file.name}</p>
-            <button onClick={handleRemove} className={styles.removeBtn}>
-              Remove
+          {file && (
+            <div className={styles.fileInfo}>
+              <span>{file.name}</span>
+              <button
+                type="button"
+                className={styles.removeBtn}
+                onClick={handleRemove}
+              >
+                Remove
+              </button>
+            </div>
+          )}
+
+          {error && <div className={styles.error}>{error}</div>}
+
+          <div className={styles.actions}>
+            <button
+              type="button"
+              className={styles.primaryBtn}
+              onClick={handleUpload}
+              disabled={!file || isLoading}
+            >
+              {isLoading ? "Analysing..." : "Analyse statement"}
+            </button>
+
+            <button
+              type="button"
+              className={styles.secondaryBtn}
+              onClick={handleSeeExample}
+            >
+              View example
             </button>
           </div>
-        )}
-
-        {error && <p className={styles.error}>{error}</p>}
-
-        <button onClick={handleUpload} disabled={!file || isLoading}>
-          {isLoading ? "Loading..." : "Upload"}
-        </button>
-
-        <button onClick={handleSeeExample} className={styles.exampleBtn}>
-          See Example
-        </button>
-      </div>
+        </div>
+      </section>
 
       {/* Dashboard Section */}
-      <div className={styles.DashboardSection}>
-        <Dashboard analysis={analysis} />
-      </div>
+      {analysis && (
+        <section className={styles.DashboardSection}>
+          <Dashboard analysis={analysis} />
+        </section>
+      )}
     </div>
   );
 }
