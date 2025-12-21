@@ -1,0 +1,21 @@
+.overviewGrid {
+  width: 90%;
+  margin: 20px auto 0;
+  padding: 2.25rem;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.overviewGrid > * {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (max-width: 1400px) {
+  .overviewGrid {
+    grid-template-columns: 1fr;
+  }
+}
