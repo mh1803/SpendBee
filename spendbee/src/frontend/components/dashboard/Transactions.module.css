@@ -1,0 +1,257 @@
+.transactions {
+  position: relative;
+
+  width: 90%;
+  height: 70vh;
+
+  margin: 0 auto;
+  padding: 2.25rem;
+
+  border-radius: 24px;
+
+  background: linear-gradient(180deg, #ffffff 0%, #fffdf8 100%);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+
+  box-shadow: none;
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.transactions::before {
+  content: "";
+  position: absolute;
+  top: -60%;
+  right: -60%;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.3), transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.transactions:hover {
+  border-color: rgba(245, 158, 11, 0.35);
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25),
+    0 18px 40px rgba(245, 158, 11, 0.28);
+}
+
+.transactions:hover::before {
+  opacity: 0.35;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.controls input[type="text"],
+.controls select {
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 193, 7, 0.15);
+  background: #ffffff;
+
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+
+  transition: all 0.25s ease;
+  outline: none;
+}
+
+.controls input[type="text"] {
+  flex: 1;
+  min-width: 200px;
+}
+
+.controls select {
+  min-width: 150px;
+  cursor: pointer;
+}
+
+.controls input:focus,
+.controls select:focus {
+  border-color: rgba(255, 193, 7, 0.4);
+  box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.1);
+}
+
+.transactionList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.transactionItem {
+  display: grid;
+  grid-template-columns: 110px 1fr 160px 120px;
+  gap: 14px;
+  align-items: center;
+
+  padding: 1rem 1.25rem;
+  border-radius: 16px;
+
+  background: #ffffff;
+  border: 1px solid rgba(255, 193, 7, 0.12);
+
+  transition: all 0.25s ease;
+}
+
+.transactionItem:hover {
+  transform: translateX(4px);
+  border-color: rgba(255, 193, 7, 0.25);
+  background: linear-gradient(135deg, #ffffff, #fff8ed);
+}
+
+.txDate {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.txDescription {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1f2937;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.txCategory {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: right;
+  color: #d97706;
+}
+
+.txAmountPositive,
+.txAmountNegative {
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: right;
+}
+
+.txAmountPositive {
+  background: linear-gradient(135deg, #10b981, #059669);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.txAmountNegative {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (max-width: 1024px) {
+  .transactions {
+    height: 85vh;
+    padding: 1.75rem;
+  }
+
+  .transactionItem {
+    grid-template-columns: 90px 1fr 150px 120px;
+    padding: 1rem 1.1rem;
+  }
+
+  .txDate {
+    font-size: 0.85rem;
+  }
+
+  .txDescription {
+    font-size: 0.95rem;
+    line-height: 1.35;
+  }
+
+  .txCategory {
+    font-size: 0.75rem;
+  }
+
+  .txAmountPositive,
+  .txAmountNegative {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .transactions {
+    padding: 1.25rem;
+  }
+
+  .controls {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .controls input,
+  .controls select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .transactionItem {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 1rem;
+  }
+
+  .txDate {
+    font-size: 0.75rem;
+  }
+
+  .txDescription {
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  .txCategory {
+    font-size: 0.7rem;
+    text-align: left;
+  }
+
+  .txAmountPositive,
+  .txAmountNegative {
+    font-size: 1.15rem;
+    text-align: left;
+  }
+}
+
+@media (max-width: 480px) {
+  .transactions {
+    padding: 1rem 0.9rem;
+  }
+
+  .transactionItem {
+    padding: 0.9rem;
+    border-radius: 12px;
+  }
+
+  .txDescription {
+    font-size: 0.9rem;
+  }
+
+  .txAmountPositive,
+  .txAmountNegative {
+    font-size: 1rem;
+  }
+}
