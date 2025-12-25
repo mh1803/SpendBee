@@ -78,7 +78,7 @@ app.post(
             - total_spending: number
 
             - summary: string
-              2–3 sentences, friendly and concise, describing the user's overall financial health
+              4–6 sentences, friendly and concise, describing the user's overall financial health
               based strictly on the data in the transactions.
 
             - insights: string[]
