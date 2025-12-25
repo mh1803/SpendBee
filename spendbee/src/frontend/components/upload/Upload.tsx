@@ -73,7 +73,7 @@ export function Upload() {
   return (
     <div className={styles.UploadContainer}>
       {/* Upload Section */}
-      <section className={styles.UploadSection}>
+      <section id="upload" className={styles.UploadSection}>
         <div className={styles.uploadCard}>
           <h2>Upload your bank statement</h2>
           <p className={styles.subtitle}>
