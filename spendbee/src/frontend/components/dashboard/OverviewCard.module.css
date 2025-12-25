@@ -7,6 +7,9 @@
   align-items: stretch;
 }
 
+/* =========================
+   OVERVIEW CARD
+========================= */
 .overviewCard {
   position: relative;
   display: flex;
@@ -23,14 +26,12 @@
   box-shadow: none;
 
   transition: transform 0.25s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-
   overflow: hidden;
 }
 
 .overviewCard:hover {
   transform: translateY(-4px);
   border-color: rgba(245, 158, 11, 0.35);
-
   box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25),
     0 18px 40px rgba(245, 158, 11, 0.28);
 }
@@ -43,9 +44,7 @@
   width: 280px;
   height: 280px;
   border-radius: 50%;
-
   background: radial-gradient(circle, rgba(245, 158, 11, 0.3), transparent 70%);
-
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
@@ -66,10 +65,13 @@
   opacity: 0;
 }
 
+/* =========================
+   TEXT
+========================= */
 .label {
   font-size: 0.85rem;
   font-weight: 800;
-  color: #6b7280;
+  color: #1f2937;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   margin-bottom: 10px;
@@ -86,6 +88,9 @@
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.06);
 }
 
+/* =========================
+   STATES
+========================= */
 .neutral::after {
   opacity: 1;
   background: linear-gradient(#f59e0b, #d97706);
@@ -133,44 +138,43 @@
     0 18px 40px rgba(239, 68, 68, 0.28);
 }
 
+/* =========================
+   RESPONSIVE
+========================= */
 @media (max-width: 1400px) {
   .value {
-    font-size: 2.1rem;
+    font-size: 2.2rem;
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1100px) {
   .overviewCard {
     padding: 1.5rem;
   }
 
   .value {
-    font-size: 1.85rem;
+    font-size: 2.2rem;
   }
 }
 
 @media (max-width: 768px) {
   .overviewGrid {
     grid-template-columns: 1fr;
-    gap: 18px;
+    gap: 20px;
   }
 
   .overviewCard {
-    padding: 1.5rem;
+    padding: 1.4rem;
   }
 }
 
 @media (max-width: 480px) {
   .overviewCard {
     padding: 1.25rem;
-    border-radius: 18px;
-  }
-
-  .label {
-    font-size: 0.7rem;
+    border-radius: 20px;
   }
 
   .value {
-    font-size: 1.6rem;
+    font-size: 1.7rem;
   }
 }
