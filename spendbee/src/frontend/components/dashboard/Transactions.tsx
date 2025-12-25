@@ -106,7 +106,7 @@ export function Transactions({ transactions, currency }: TransactionsProps) {
 
   return (
     <div className={styles.transactions}>
-      <h3>Transactions</h3>
+      <h3 className={styles.title}>Transactions</h3>
 
       <div className={styles.controls}>
         <input

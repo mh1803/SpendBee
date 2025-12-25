@@ -16,9 +16,9 @@ export function Hero() {
       <div className={styles.greeting}>
         <h1 className={styles.title}>Take Control of Your Money</h1>
         <p className={styles.description}>
-          Instantly understand your spending habits with Spend Bee, an
-          AI-powered bank statement analyser. Track your expenses and make
-          smarter financial decisions in seconds.
+          Instantly understand your spending habits with SpendBee, an AI-powered
+          bank statement analyser. Track your expenses and make smarter
+          financial decisions in seconds.
         </p>
         <div className={styles.buttons}>
           <button className={styles.primaryBtn}>Get Started for Free</button>

@@ -7,7 +7,7 @@ interface InsightsProps {
 export function Insights({ insights }: InsightsProps) {
   return (
     <div className={styles.insights}>
-      <h3>Insights</h3>
+      <h3 className={styles.title}>Insights</h3>
       <ul>
         {insights.map((i, idx) => (
           <li key={idx}>{i}</li>

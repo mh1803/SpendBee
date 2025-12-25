@@ -7,7 +7,7 @@ interface SummaryProps {
 export function Summary({ summary }: SummaryProps) {
   return (
     <div className={styles.summary}>
-      <h3>Summary</h3>
+      <h3 className={styles.title}>Summary</h3>
       <p>{summary}</p>
     </div>
   );

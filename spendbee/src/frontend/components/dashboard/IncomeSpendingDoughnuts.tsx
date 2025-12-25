@@ -1,4 +1,3 @@
-// IncomeSpendingDoughnuts.tsx
 import React, { useState } from "react";
 import type {
   Transaction,
@@ -55,7 +54,6 @@ interface HexPointType {
   y: number;
 }
 
-// Color palette matching your design system
 const COLORS: ColorType[] = [
   { bg: "rgba(245, 158, 11, 0.85)", border: "#f59e0b", name: "Amber" },
   { bg: "rgba(16, 185, 129, 0.85)", border: "#10b981", name: "Green" },
@@ -67,7 +65,6 @@ const COLORS: ColorType[] = [
   { bg: "rgba(251, 146, 60, 0.85)", border: "#fb923c", name: "Orange" },
 ];
 
-// Create hexagon path with segments
 function createHexagonSegments(
   data: { label: string; value: number; color: ColorType }[],
   centerX: number,
@@ -76,7 +73,6 @@ function createHexagonSegments(
 ): { segments: SegmentData[]; hexPoints: HexPointType[] } {
   const total = data.reduce((sum, item) => sum + item.value, 0);
 
-  // Calculate hexagon points
   const hexPoints: HexPointType[] = [];
   for (let i = 0; i < 6; i++) {
     const angle = (Math.PI / 3) * i - Math.PI / 2;
@@ -87,20 +83,18 @@ function createHexagonSegments(
   }
 
   const segments: SegmentData[] = [];
-  let currentAngle = -Math.PI / 2; // Start at top
+  let currentAngle = -Math.PI / 2;
 
   data.forEach((item) => {
     const percentage = item.value / total;
     const segmentAngle = percentage * 2 * Math.PI;
     const endAngle = currentAngle + segmentAngle;
 
-    // Create path for this segment
     const startX = centerX + radius * Math.cos(currentAngle);
     const startY = centerY + radius * Math.sin(currentAngle);
     const endX = centerX + radius * Math.cos(endAngle);
     const endY = centerY + radius * Math.sin(endAngle);
 
-    // Calculate label position (middle of segment)
     const labelAngle = currentAngle + segmentAngle / 2;
     const labelRadius = radius * 0.65;
     const labelX = centerX + labelRadius * Math.cos(labelAngle);
@@ -131,7 +125,6 @@ function createHexagonSegments(
   return { segments, hexPoints };
 }
 
-// Hexagon Pie Chart Component
 function HexagonPieChart({
   title,
   data,
@@ -154,7 +147,6 @@ function HexagonPieChart({
     radius
   );
 
-  // Create hexagon clipping path
   const hexagonPath =
     hexPoints
       .map((point, i) => `${i === 0 ? "M" : "L"} ${point.x} ${point.y}`)

@@ -21,8 +21,6 @@ export function Dashboard({ analysis }: DashboardProps) {
         </div>
       ) : (
         <>
-          <h1>SpendBee Analysis</h1>
-
           <Overview analysis={analysis} />
 
           <Transactions
