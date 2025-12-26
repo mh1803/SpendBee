@@ -51,6 +51,68 @@ export function SpendingOverTime({
     return { labels: sortedDates, dataValues: sortedValues };
   }, [transactions]);
 
+  const chartOptions: ChartOptions<"line"> = useMemo(() => {
+    const isMobile = window.innerWidth < 768;
+
+    return {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        title: { display: false },
+        tooltip: {
+          backgroundColor: "rgba(31, 41, 55, 0.95)",
+          titleColor: "#ffffff",
+          bodyColor: "#ffffff",
+          padding: 12,
+          cornerRadius: 8,
+          titleFont: {
+            size: 13,
+            weight: 600,
+          },
+          bodyFont: {
+            size: 14,
+            weight: 700,
+          },
+          callbacks: {
+            label: (context) => {
+              const value = context.parsed.y;
+              return typeof value === "number"
+                ? `${currency}${value.toFixed(2)}`
+                : "";
+            },
+          },
+        },
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: {
+            color: "#6b7280",
+            autoSkip: true,
+            maxTicksLimit: 6,
+            font: { size: isMobile ? 10 : 11, weight: 500 },
+          },
+          border: { display: false },
+          ...(labels.length > 0 && {
+            min: labels[0],
+            max: labels[labels.length - 1],
+          }),
+        },
+        y: {
+          beginAtZero: true,
+          grid: { color: "rgba(255, 193, 7, 0.08)" },
+          ticks: {
+            color: "#6b7280",
+            font: { size: isMobile ? 10 : 11, weight: 500 },
+            callback: (value) => `${currency}${value}`,
+          },
+          border: { display: false },
+        },
+      },
+    };
+  }, [labels, currency]);
+
   const chartData = {
     labels,
     datasets: [
@@ -74,57 +136,19 @@ export function SpendingOverTime({
     ],
   };
 
-  const chartOptions: ChartOptions<"line"> = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      title: { display: false },
-      tooltip: {
-        backgroundColor: "rgba(31, 41, 55, 0.95)",
-        titleColor: "#ffffff",
-        bodyColor: "#ffffff",
-        padding: 12,
-        cornerRadius: 8,
-        titleFont: {
-          size: 13,
-          weight: 600,
-        },
-        bodyFont: {
-          size: 14,
-          weight: 700,
-        },
-        callbacks: {
-          label: (context) =>
-            `${currency}${(context.parsed.y as number).toFixed(2)}`,
-        },
-      },
-    },
-    scales: {
-      x: {
-        grid: { display: false },
-        ticks: {
-          color: "#6b7280",
-          autoSkip: true,
-          maxTicksLimit: 6,
-          font: { size: window.innerWidth < 768 ? 10 : 11, weight: 500 },
-        },
-        border: { display: false },
-        min: labels[0],
-        max: labels[labels.length - 1],
-      },
-      y: {
-        beginAtZero: true,
-        grid: { color: "rgba(255, 193, 7, 0.08)" },
-        ticks: {
-          color: "#6b7280",
-          font: { size: window.innerWidth < 768 ? 10 : 11, weight: 500 },
-          callback: (value) => `${currency}${value}`,
-        },
-        border: { display: false },
-      },
-    },
-  };
+  // Handle empty state
+  if (labels.length === 0) {
+    return (
+      <div className={styles.chartContainer}>
+        <h3 className={styles.chartTitle}>Spending Over Time</h3>
+        <div className={styles.chartWrapper}>
+          <div className={styles.emptyState}>
+            <p>No spending data available</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.chartContainer}>
