@@ -89,10 +89,27 @@ app.post(
               3–5 practical, actionable suggestions based ONLY on the data.
 
             - transactions: array of objects with:
-              - date: string
-              - description: string
-              - amount: number
-              - category: string
+            - date: string
+            - description: string
+            - amount: number
+            - category: string (MUST be one of the following exact values)
+
+            Income categories (amount > 0):
+            - salary
+            - freelance
+            - gifts
+            - refunds
+            - other
+
+            Spending categories (amount < 0):
+            - groceries        (food, supermarkets, dining essentials)
+            - dining           (restaurants, cafes, takeaways)
+            - bills            (rent, utilities, phone, subscriptions)
+            - transport        (fuel, public transport, parking)
+            - health           (pharmacy, medical, fitness)
+            - shopping         (retail, online shopping)
+            - leisure          (entertainment, hobbies)
+            - other            (cash withdrawals, uncategorised)
 
             Rules:
             - Amounts spent should be negative, income positive.
