@@ -1,6 +1,13 @@
 import styles from "./Hero.module.css";
 
 export function Hero() {
+  const scrollToSection = (id: string) => {
+    const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <section id="home" className={styles.hero}>
       <div className={styles.hexWrapper}>
@@ -21,8 +28,18 @@ export function Hero() {
           financial decisions in seconds.
         </p>
         <div className={styles.buttons}>
-          <button className={styles.primaryBtn}>Get Started for Free</button>
-          <button className={styles.secondaryBtn}>Learn How It Works</button>
+          <button
+            className={styles.primaryBtn}
+            onClick={() => scrollToSection("upload")}
+          >
+            Get Started for Free
+          </button>
+          <button
+            className={styles.secondaryBtn}
+            onClick={() => scrollToSection("about")}
+          >
+            Learn How It Works
+          </button>
         </div>
       </div>
     </section>
