@@ -5,10 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "backend:build": "tsc -p tsconfig.json",
+    "backend:build": "tsc -p tsconfig.server.json",
     "backend": "node dist/server.js",
     "backend:dev": "nodemon --watch src --ext ts --exec \"npx ts-node src/server.ts\"",
     "start": "concurrently \"npm run dev\" \"npm run backend:dev\""
@@ -19,6 +18,7 @@
     "crypto-js": "^4.2.0",
     "crypto.js": "^3.3.4",
     "csv-parse": "^5.6.0",
+    "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "lucide": "^0.562.0",
     "lucide-react": "^0.562.0",

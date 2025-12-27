@@ -1,35 +1,27 @@
+import "dotenv/config";
 import express, { type Request, type Response } from "express";
 import multer from "multer";
 import cors, { type CorsOptions } from "cors";
 import OpenAI from "openai";
 
-import type { SpendBeeAnalysis } from "./types/analysis";
+import type { SpendBeeAnalysis } from "./types/analysis.js";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.BACKEND_PORT || 3000;
 
 const allowedOrigins: string[] = process.env.CORS_ORIGINS
   ? process.env.CORS_ORIGINS.split(",").map((o) => o.trim())
   : [];
 
+// CORS options
 const corsOptions: CorsOptions = {
-  origin: (
-    origin: string | undefined,
-    callback: (err: Error | null, allow?: boolean) => void
-  ) => {
-    // Allow non-browser requests
-    if (!origin) {
-      return callback(null, true);
-    }
-
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true); // Allow non-browser requests
+    const normalizedOrigin = origin.replace(/\/$/, "");
+    if (allowedOrigins.includes(normalizedOrigin)) return callback(null, true);
+    console.warn(`CORS blocked for origin: ${origin}`);
     return callback(new Error(`CORS blocked for origin: ${origin}`));
   },
-
-  // Cache preflight responses
   maxAge: 86400, // 24 hours
   optionsSuccessStatus: 204,
 };
@@ -97,26 +89,54 @@ app.post(
             The JSON response MUST include:
 
             - currency: string
+            The currency symbol used in the statement (e.g., $, £, €), instead of a 3-letter code.
+
             - initial_balance: number
             - final_balance: number
             - total_income: number
             - total_spending: number
 
-            - summary: string (4–6 sentences)
-            - insights: string[] (3–5)
-            - tips: string[] (3–5)
+            - summary: string
+              4–6 sentences, friendly and concise, describing the user's overall financial health
+              based strictly on the data in the transactions.
+
+            - insights: string[] 
+              3–5 concise points highlighting patterns, trends, or anomalies
+              that are directly supported by the transaction data.
+
+            - tips: string[]
+              3–5 practical, actionable suggestions based ONLY on the data.
 
             - transactions: array of objects with:
-              - date: string
-              - description: string
-              - amount: number
-              - category: string
+            - date: string
+            - description: string
+            - amount: number
+            - category: string (MUST be one of the following exact values)
+
+            Income categories (amount > 0):
+            - salary
+            - freelance
+            - gifts
+            - refunds
+            - other
+
+            Spending categories (amount < 0):
+            - groceries        (food, supermarkets, dining essentials)
+            - dining           (restaurants, cafes, takeaways)
+            - bills            (rent, utilities, phone, subscriptions)
+            - transport        (fuel, public transport, parking)
+            - health           (pharmacy, medical, fitness)
+            - shopping         (retail, online shopping)
+            - leisure          (entertainment, hobbies)
+            - other            (cash withdrawals, uncategorised)
 
             Rules:
-            - Spending negative, income positive
-            - Totals must match transactions
-            - STRICT JSON only
-            `,
+            - Amounts spent should be negative, income positive.
+            - Ensure totals match transactions.
+            - Output STRICT JSON only.
+            - Use realistic assumptions only if balances are missing.
+            - Detect and return the currency consistently across transactions.
+      `,
           },
           {
             role: "user",
@@ -132,7 +152,7 @@ app.post(
       try {
         analysisJSON = JSON.parse(analysisText) as SpendBeeAnalysis;
       } catch (err) {
-        console.error("Failed to parse AI response:", err);
+        console.error("Failed to parse AI response as JSON:", err);
         return res.status(500).json({ error: "AI returned invalid JSON" });
       }
 
@@ -144,6 +164,4 @@ app.post(
   }
 );
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
