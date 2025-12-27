@@ -1,12 +1,40 @@
 import express, { type Request, type Response } from "express";
 import multer from "multer";
+import cors, { type CorsOptions } from "cors";
 import OpenAI from "openai";
 
 import type { SpendBeeAnalysis } from "./types/analysis";
 
-// Express app
 const app = express();
-const PORT = process.env.BACKEND_PORT || 3000;
+const PORT = process.env.PORT || 3000;
+
+const allowedOrigins: string[] = process.env.CORS_ORIGINS
+  ? process.env.CORS_ORIGINS.split(",").map((o) => o.trim())
+  : [];
+
+const corsOptions: CorsOptions = {
+  origin: (
+    origin: string | undefined,
+    callback: (err: Error | null, allow?: boolean) => void
+  ) => {
+    // Allow non-browser requests
+    if (!origin) {
+      return callback(null, true);
+    }
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error(`CORS blocked for origin: ${origin}`));
+  },
+
+  // Cache preflight responses
+  maxAge: 86400, // 24 hours
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
 
 // Multer memory storage
 const upload = multer({
@@ -69,55 +97,26 @@ app.post(
             The JSON response MUST include:
 
             - currency: string
-            The currency symbol used in the statement (e.g., $, £, €), instead of a 3-letter code.
-
-
             - initial_balance: number
             - final_balance: number
             - total_income: number
             - total_spending: number
 
-            - summary: string
-              4–6 sentences, friendly and concise, describing the user's overall financial health
-              based strictly on the data in the transactions.
-
-            - insights: string[]
-              3–5 concise points highlighting patterns, trends, or anomalies
-              that are directly supported by the transaction data.
-
-            - tips: string[]
-              3–5 practical, actionable suggestions based ONLY on the data.
+            - summary: string (4–6 sentences)
+            - insights: string[] (3–5)
+            - tips: string[] (3–5)
 
             - transactions: array of objects with:
-            - date: string
-            - description: string
-            - amount: number
-            - category: string (MUST be one of the following exact values)
-
-            Income categories (amount > 0):
-            - salary
-            - freelance
-            - gifts
-            - refunds
-            - other
-
-            Spending categories (amount < 0):
-            - groceries        (food, supermarkets, dining essentials)
-            - dining           (restaurants, cafes, takeaways)
-            - bills            (rent, utilities, phone, subscriptions)
-            - transport        (fuel, public transport, parking)
-            - health           (pharmacy, medical, fitness)
-            - shopping         (retail, online shopping)
-            - leisure          (entertainment, hobbies)
-            - other            (cash withdrawals, uncategorised)
+              - date: string
+              - description: string
+              - amount: number
+              - category: string
 
             Rules:
-            - Amounts spent should be negative, income positive.
-            - Ensure totals match transactions.
-            - Output STRICT JSON only.
-            - Use realistic assumptions only if balances are missing.
-            - Detect and return the currency consistently across transactions.
-      `,
+            - Spending negative, income positive
+            - Totals must match transactions
+            - STRICT JSON only
+            `,
           },
           {
             role: "user",
@@ -133,7 +132,7 @@ app.post(
       try {
         analysisJSON = JSON.parse(analysisText) as SpendBeeAnalysis;
       } catch (err) {
-        console.error("Failed to parse AI response as JSON:", err);
+        console.error("Failed to parse AI response:", err);
         return res.status(500).json({ error: "AI returned invalid JSON" });
       }
 
@@ -145,4 +144,6 @@ app.post(
   }
 );
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

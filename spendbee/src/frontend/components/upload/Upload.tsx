@@ -4,6 +4,8 @@ import { Dashboard } from "../dashboard/Dashboard";
 import type { SpendBeeAnalysis } from "../../../types/analysis";
 import sampleAnalysis from "../../../sample.json";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export function Upload() {
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -44,7 +46,7 @@ export function Upload() {
       const formData = new FormData();
       formData.append("file", file);
 
-      const response = await fetch("/api/upload", {
+      const response = await fetch(`${API_URL}/api/upload`, {
         method: "POST",
         body: formData,
       });
@@ -72,7 +74,6 @@ export function Upload() {
 
   return (
     <div className={styles.UploadContainer}>
-      {/* Upload Section */}
       <section id="upload" className={styles.UploadSection}>
         <div className={styles.uploadCard}>
           <h2>Upload your bank statement</h2>
@@ -133,7 +134,6 @@ export function Upload() {
         </div>
       </section>
 
-      {/* Dashboard Section */}
       {analysis && (
         <section className={styles.DashboardSection}>
           <Dashboard analysis={analysis} />
