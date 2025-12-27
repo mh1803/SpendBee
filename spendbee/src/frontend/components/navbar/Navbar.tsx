@@ -2,36 +2,41 @@ import { useState } from "react";
 import styles from "./Navbar.module.css";
 import logo from "../../../../public/images/logo.png";
 
+import { HiHome, HiInformationCircle, HiUpload } from "react-icons/hi";
+
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggleSidebar = () => setIsOpen(!isOpen);
+  const closeSidebar = () => setIsOpen(false);
 
-  const closeSidebar = () => {
-    setIsOpen(false);
+  const handleSmoothScroll = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    id: string
+  ) => {
+    e.preventDefault();
+    const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+    closeSidebar();
   };
 
   return (
     <>
-      {/* Mobile Hamburger Button */}
       <button
         className={`${styles.hamburger} ${isOpen ? styles.hidden : ""}`}
         onClick={toggleSidebar}
         aria-label="Toggle menu"
       >
-        <span className={styles.hamburgerLine}></span>
-        <span className={styles.hamburgerLine}></span>
-        <span className={styles.hamburgerLine}></span>
+        <span className={styles.hamburgerLine} />
+        <span className={styles.hamburgerLine} />
+        <span className={styles.hamburgerLine} />
       </button>
 
-      {/* Overlay for mobile */}
-      {isOpen && <div className={styles.overlay} onClick={closeSidebar}></div>}
+      {isOpen && <div className={styles.overlay} onClick={closeSidebar} />}
 
-      {/* Sidebar */}
       <nav className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}>
-        {/* Mobile close button */}
         <button
           className={styles.closeButton}
           onClick={closeSidebar}
@@ -40,27 +45,30 @@ export function Navbar() {
           ×
         </button>
 
-        {/* Logo Section */}
         <div className={styles.logoSection}>
           <img className={styles.logo} src={logo} alt="SpendBee Logo" />
           <h1 className={styles.title}>SpendBee</h1>
         </div>
 
-        {/* Navigation Links */}
         <ul className={styles.navLinks}>
           <li>
-            <a href="#home" onClick={closeSidebar}>
-              Home
+            <a href="#home" onClick={(e) => handleSmoothScroll(e, "home")}>
+              <HiHome />
+              <span>Home</span>
             </a>
           </li>
+
           <li>
-            <a href="#about" onClick={closeSidebar}>
-              About
+            <a href="#about" onClick={(e) => handleSmoothScroll(e, "about")}>
+              <HiInformationCircle />
+              <span>About</span>
             </a>
           </li>
+
           <li>
-            <a href="#upload" onClick={closeSidebar}>
-              Upload
+            <a href="#upload" onClick={(e) => handleSmoothScroll(e, "upload")}>
+              <HiUpload />
+              <span>Upload</span>
             </a>
           </li>
         </ul>

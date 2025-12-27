@@ -1,0 +1,25 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.AppLayout {
+  min-height: 100dvh;
+  width: 100%;
+}
+
+.AppContent {
+  margin-left: 235px;
+  width: calc(100% - 235px);
+  min-height: 100dvh;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1100px) {
+  .AppContent {
+    margin-left: 0;
+    width: 100%;
+  }
+}
