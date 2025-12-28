@@ -21,7 +21,6 @@ const INCOME_CATEGORIES: IncomeCategory[] = [
   "refunds",
   "other",
 ];
-
 const SPENDING_CATEGORIES: SpendingCategory[] = [
   "groceries",
   "dining",
@@ -38,7 +37,6 @@ interface ColorType {
   border: string;
   name: string;
 }
-
 interface SegmentData {
   path: string;
   color: ColorType;
@@ -48,7 +46,6 @@ interface SegmentData {
   labelX: number;
   labelY: number;
 }
-
 interface HexPointType {
   x: number;
   y: number;
@@ -72,7 +69,6 @@ function createHexagonSegments(
   radius: number
 ): { segments: SegmentData[]; hexPoints: HexPointType[] } {
   const total = data.reduce((sum, item) => sum + item.value, 0);
-
   const hexPoints: HexPointType[] = [];
   for (let i = 0; i < 6; i++) {
     const angle = (Math.PI / 3) * i - Math.PI / 2;
@@ -86,28 +82,39 @@ function createHexagonSegments(
   let currentAngle = -Math.PI / 2;
 
   data.forEach((item) => {
-    const percentage = item.value / total;
-    const segmentAngle = percentage * 2 * Math.PI;
+    const percentage = total === 0 ? 0 : item.value / total;
+    const segmentAngle =
+      percentage >= 1 ? 2 * Math.PI : Math.max(percentage * 2 * Math.PI, 0.01); // full circle or min slice
     const endAngle = currentAngle + segmentAngle;
-
-    const startX = centerX + radius * Math.cos(currentAngle);
-    const startY = centerY + radius * Math.sin(currentAngle);
-    const endX = centerX + radius * Math.cos(endAngle);
-    const endY = centerY + radius * Math.sin(endAngle);
 
     const labelAngle = currentAngle + segmentAngle / 2;
     const labelRadius = radius * 0.65;
     const labelX = centerX + labelRadius * Math.cos(labelAngle);
     const labelY = centerY + labelRadius * Math.sin(labelAngle);
 
-    const largeArcFlag = segmentAngle > Math.PI ? 1 : 0;
+    let pathData: string;
 
-    const pathData = [
-      `M ${centerX} ${centerY}`,
-      `L ${startX} ${startY}`,
-      `A ${radius} ${radius} 0 ${largeArcFlag} 1 ${endX} ${endY}`,
-      "Z",
-    ].join(" ");
+    if (percentage >= 1) {
+      // full circle segment
+      pathData = `
+        M ${centerX} ${centerY}
+        m -${radius}, 0
+        a ${radius} ${radius} 0 1 0 ${radius * 2} 0
+        a ${radius} ${radius} 0 1 0 -${radius * 2} 0
+      `;
+    } else {
+      const startX = centerX + radius * Math.cos(currentAngle);
+      const startY = centerY + radius * Math.sin(currentAngle);
+      const endX = centerX + radius * Math.cos(endAngle);
+      const endY = centerY + radius * Math.sin(endAngle);
+      const largeArcFlag = segmentAngle > Math.PI ? 1 : 0;
+      pathData = [
+        `M ${centerX} ${centerY}`,
+        `L ${startX} ${startY}`,
+        `A ${radius} ${radius} 0 ${largeArcFlag} 1 ${endX} ${endY}`,
+        "Z",
+      ].join(" ");
+    }
 
     segments.push({
       path: pathData,
@@ -118,7 +125,6 @@ function createHexagonSegments(
       labelX,
       labelY,
     });
-
     currentAngle = endAngle;
   });
 
@@ -135,11 +141,9 @@ function HexagonPieChart({
   currency: string;
 }) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
-  const centerX = 200;
-  const centerY = 200;
-  const radius = 140;
-
+  const centerX = 200,
+    centerY = 200,
+    radius = 140;
   const { segments, hexPoints } = createHexagonSegments(
     data,
     centerX,
@@ -148,19 +152,15 @@ function HexagonPieChart({
   );
 
   const hexagonPath =
-    hexPoints
-      .map((point, i) => `${i === 0 ? "M" : "L"} ${point.x} ${point.y}`)
-      .join(" ") + " Z";
+    hexPoints.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ") +
+    " Z";
 
   return (
     <div className={styles.chartCard}>
       <div className={styles.chartGlow} />
-
       <div className={styles.chartContent}>
         <h3 className={styles.chartTitle}>{title}</h3>
-
         <div className={styles.chartLayout}>
-          {/* Hexagon Pie Chart */}
           <div className={styles.chartSvgContainer}>
             <svg
               width="400"
@@ -172,8 +172,6 @@ function HexagonPieChart({
                 <clipPath id={`hexClip-${title.replace(/\s/g, "")}`}>
                   <path d={hexagonPath} />
                 </clipPath>
-
-                {/* Gradient definitions for segments */}
                 {segments.map((segment, i) => (
                   <linearGradient
                     key={i}
@@ -196,8 +194,6 @@ function HexagonPieChart({
                     />
                   </linearGradient>
                 ))}
-
-                {/* Shadow filter */}
                 {segments.map((segment, i) => (
                   <filter
                     key={i}
@@ -212,8 +208,6 @@ function HexagonPieChart({
                     />
                   </filter>
                 ))}
-
-                {/* Center gradient */}
                 <radialGradient id={`centerGrad-${title.replace(/\s/g, "")}`}>
                   <stop
                     offset="0%"
@@ -226,14 +220,14 @@ function HexagonPieChart({
                 </radialGradient>
               </defs>
 
-              {/* Outer glow ring */}
+              {/* Outer glow */}
               <path
                 d={
                   hexPoints
-                    .map((point, i) => {
+                    .map((p, i) => {
                       const scale = 1.08;
-                      const scaledX = centerX + (point.x - centerX) * scale;
-                      const scaledY = centerY + (point.y - centerY) * scale;
+                      const scaledX = centerX + (p.x - centerX) * scale;
+                      const scaledY = centerY + (p.y - centerY) * scale;
                       return `${i === 0 ? "M" : "L"} ${scaledX} ${scaledY}`;
                     })
                     .join(" ") + " Z"
@@ -241,17 +235,15 @@ function HexagonPieChart({
                 fill="none"
                 stroke="rgba(245, 158, 11, 0.2)"
                 strokeWidth="2"
-                opacity="0.4"
-                style={{
-                  filter: "blur(1px)",
-                }}
+                opacity={0.4}
+                style={{ filter: "blur(1px)" }}
               />
 
-              {/* Main hexagon border */}
+              {/* Hexagon border */}
               <path
                 d={hexagonPath}
                 fill="none"
-                stroke="rgba(0, 0, 0, 0.15)"
+                stroke="rgba(0,0,0,0.15)"
                 strokeWidth="3"
               />
 
@@ -263,7 +255,7 @@ function HexagonPieChart({
                     d={segment.path}
                     fill={`url(#grad-${title.replace(/\s/g, "")}-${i})`}
                     stroke={segment.color.border}
-                    strokeWidth="2.5"
+                    strokeWidth={2.5}
                     className={styles.segment}
                     style={{
                       opacity:
@@ -288,17 +280,14 @@ function HexagonPieChart({
                 cy={centerY}
                 r="55"
                 fill={`url(#centerGrad-${title.replace(/\s/g, "")})`}
-                style={{
-                  filter: "drop-shadow(0 2px 6px rgba(0, 0, 0, 0.1))",
-                }}
+                style={{ filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.1))" }}
               />
-
               <circle
                 cx={centerX}
                 cy={centerY}
                 r="55"
                 fill="none"
-                stroke="rgba(245, 158, 11, 0.25)"
+                stroke="rgba(245,158,11,0.25)"
                 strokeWidth="2"
               />
             </svg>
@@ -318,7 +307,7 @@ function HexagonPieChart({
                       ? `linear-gradient(135deg, ${segment.color.bg.replace(
                           "0.85",
                           "0.15"
-                        )}, rgba(255, 255, 255, 0.8))`
+                        )}, rgba(255,255,255,0.8))`
                       : "transparent",
                   borderColor:
                     hoveredIndex === i ? segment.color.border : "transparent",
@@ -386,7 +375,6 @@ export function IncomeSpendingDoughnuts({
     value: value || 0,
     color: COLORS[i % COLORS.length],
   }));
-
   const spendingData = Object.entries(spendingTotals).map(
     ([label, value], i) => ({
       label,
@@ -397,7 +385,6 @@ export function IncomeSpendingDoughnuts({
 
   return (
     <div className={styles.container}>
-      {/* Hexagon Charts */}
       <div className={styles.chartsGrid}>
         <HexagonPieChart
           title="Income by Category"
@@ -410,8 +397,6 @@ export function IncomeSpendingDoughnuts({
           currency={currency}
         />
       </div>
-
-      {/* Overview Cards */}
       <div className={styles.cardsGrid}>
         <OverviewCard
           label="Total Income"
