@@ -120,7 +120,14 @@ export function Upload() {
               onClick={handleUpload}
               disabled={!file || isLoading}
             >
-              {isLoading ? "Analysing..." : "Analyse statement"}
+              {isLoading ? (
+                <>
+                  <span className={styles.spinner} />
+                  <span>Analysing…</span>
+                </>
+              ) : (
+                "Analyse statement"
+              )}
             </button>
 
             <button
