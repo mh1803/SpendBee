@@ -166,6 +166,11 @@
   position: relative;
   overflow: hidden;
 
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+
   transition: all 0.3s ease;
   box-shadow: 0 4px 16px rgba(245, 158, 11, 0.4);
 }
@@ -197,6 +202,29 @@
   background: #d1d5db;
   box-shadow: none;
   cursor: not-allowed;
+}
+
+.primaryBtn:disabled::before {
+  display: none;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+
+  border-radius: 50%;
+
+  border: 2.5px solid rgba(245, 158, 11, 0.35);
+  border-top-color: #f59e0b;
+
+  animation: spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .secondaryBtn {
