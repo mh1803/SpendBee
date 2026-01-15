@@ -1,0 +1,15 @@
+Date,Description,Amount,Balance
+2026-01-01,Initial Balance,,1000.00
+2026-01-01,Salary,2500.00,3500.00
+2026-01-02,Grocery Store,-120.50,3379.50
+2026-01-03,Electricity Bill,-60.75,3318.75
+2026-01-04,Coffee Shop,-5.25,3313.50
+2026-01-05,Freelance Project,450.00,3763.50
+2026-01-06,Pharmacy,-35.00,3728.50
+2026-01-07,Refund,25.00,3753.50
+2026-01-08,Restaurant,-45.60,3707.90
+2026-01-09,Online Shopping,-150.00,3557.90
+2026-01-10,Parking,-12.00,3545.90
+2026-01-11,Gift,100.00,3645.90
+2026-01-12,Fuel,-55.40,3590.50
+2026-01-12,Final Balance,,3590.50
