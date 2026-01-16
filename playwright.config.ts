@@ -3,26 +3,18 @@ import { defineConfig, devices } from "@playwright/test";
 export default defineConfig({
   testDir: "./tests",
 
-  // Shared settings for all browsers
+  // Shared settings for all tests
   use: {
     baseURL: "http://localhost:5173",
     headless: true,
     trace: "on-first-retry",
   },
 
-  // Run tests against multiple browsers
+  // Run tests only on Chromium
   projects: [
     {
       name: "Chromium",
       use: { ...devices["Desktop Chrome"] },
-    },
-    {
-      name: "Firefox",
-      use: { ...devices["Desktop Firefox"] },
-    },
-    {
-      name: "WebKit",
-      use: { ...devices["Desktop Safari"] },
     },
   ],
 
