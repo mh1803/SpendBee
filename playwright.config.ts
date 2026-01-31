@@ -22,18 +22,16 @@ export default defineConfig({
   // Start web servers before running tests
   webServer: [
     {
-      // Start the frontend dev server (Vite)
-      command: "npm run dev", // Command to start frontend
-      url: "http://localhost:5173", // Wait for this URL to be available before starting tests
-      reuseExistingServer: !process.env.CI, // Reuse if already running locally (skip starting a new server)
-      timeout: 120_000, // Wait up to 120 seconds for the server to be ready
+      command: "npm run backend:dev",
+      url: "http://localhost:3000/health",
+      reuseExistingServer: !process.env.CI,
+      timeout: 30_000,
     },
     {
-      // Start the backend server (Express)
-      command: "npm run backend:dev", // Command to start backend
-      url: "http://localhost:3000", // Wait for backend API to be available before tests
-      reuseExistingServer: !process.env.CI, // Reuse if already running locally
-      timeout: 20_000, // Wait up to 20 seconds for backend to be ready
+      command: "npm run dev",
+      url: "http://localhost:5173",
+      reuseExistingServer: !process.env.CI,
+      timeout: 120_000,
     },
   ],
 });

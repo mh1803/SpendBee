@@ -7,7 +7,7 @@ import OpenAI from "openai";
 import type { SpendBeeAnalysis } from "./types/analysis.js";
 
 const app = express();
-const PORT = process.env.BACKEND_PORT || 3000;
+const PORT = Number(process.env.BACKEND_PORT) || 3000;
 
 const allowedOrigins: string[] = process.env.CORS_ORIGINS
   ? process.env.CORS_ORIGINS.split(",").map((o) => o.trim())
@@ -15,14 +15,16 @@ const allowedOrigins: string[] = process.env.CORS_ORIGINS
 
 // CORS options
 const corsOptions: CorsOptions = {
-  origin: (origin, callback) => {
-    if (!origin) return callback(null, true); // Allow non-browser requests
-    const normalizedOrigin = origin.replace(/\/$/, "");
-    if (allowedOrigins.includes(normalizedOrigin)) return callback(null, true);
-    console.warn(`CORS blocked for origin: ${origin}`);
-    return callback(new Error(`CORS blocked for origin: ${origin}`));
-  },
-  maxAge: 86400, // 24 hours
+  origin: process.env.CI
+    ? true
+    : (origin, callback) => {
+        if (!origin) return callback(null, true);
+        const normalizedOrigin = origin.replace(/\/$/, "");
+        if (allowedOrigins.includes(normalizedOrigin))
+          return callback(null, true);
+        return callback(new Error(`CORS blocked for origin: ${origin}`));
+      },
+  maxAge: 86400,
   optionsSuccessStatus: 204,
 };
 
@@ -46,6 +48,22 @@ app.post(
   async (req: Request, res: Response) => {
     const file = req.file;
     if (!file) return res.status(400).json({ error: "No file uploaded" });
+
+    if (process.env.CI) {
+      return res.json({
+        analysis: {
+          currency: "£",
+          initial_balance: 1000,
+          final_balance: 900,
+          total_income: 0,
+          total_spending: -100,
+          summary: "Mock analysis for CI.",
+          insights: [],
+          tips: [],
+          transactions: [],
+        },
+      });
+    }
 
     try {
       let fileContent = "";
@@ -161,7 +179,14 @@ app.post(
       console.error(err);
       res.status(500).json({ error: "Failed to process file" });
     }
-  }
+  },
 );
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.get("/health", (_req: Request, res: Response) => {
+  res.status(200).send("ok");
+});
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Backend running on port ${PORT}`);
+  console.log("CI:", process.env.CI);
+});
