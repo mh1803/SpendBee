@@ -7,7 +7,7 @@ import OpenAI from "openai";
 import type { SpendBeeAnalysis } from "./types/analysis.js";
 
 const app = express();
-const PORT = Number(process.env.BACKEND_PORT) || 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 // CORS
 const allowedOrigins: string[] = process.env.CORS_ORIGINS
