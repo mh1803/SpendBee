@@ -1,14 +1,14 @@
 name: SpendBee CI
-
 on:
   pull_request:
+    branches: [master]
+  push:
     branches: [master]
   workflow_dispatch:
 
 jobs:
   build-and-lint:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
