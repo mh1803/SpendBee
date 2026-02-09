@@ -9,13 +9,16 @@ import type { SpendBeeAnalysis } from "./types/analysis.js";
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 
+// Detect if running in GitHub Actions CI (not Railway)
+const isGitHubCI = process.env.GITHUB_ACTIONS === "true";
+
 // CORS
 const allowedOrigins: string[] = process.env.CORS_ORIGINS
   ? process.env.CORS_ORIGINS.split(",").map((o) => o.trim())
   : [];
 
 const corsOptions: CorsOptions = {
-  origin: process.env.CI
+  origin: isGitHubCI
     ? true
     : (origin, callback) => {
         if (!origin) return callback(null, true);
@@ -39,9 +42,9 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 },
 });
 
-// penAI (disabled in CI)
+// OpenAI (disabled in GitHub CI)
 const openai =
-  process.env.CI || !process.env.OPENAI_API_KEY
+  isGitHubCI || !process.env.OPENAI_API_KEY
     ? null
     : new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
@@ -57,8 +60,8 @@ app.post(
       return res.status(400).json({ error: "No file uploaded" });
     }
 
-    // CI mock response
-    if (process.env.CI) {
+    // GitHub CI mock response
+    if (isGitHubCI) {
       return res.json({
         analysis: {
           currency: "£",
@@ -184,7 +187,8 @@ app.post(
       }
 
       res.json({ analysis: analysisJSON });
-    } catch {
+    } catch (err) {
+      console.error("File processing error:", err);
       res.status(500).json({ error: "Failed to process file" });
     }
   },
@@ -198,5 +202,6 @@ app.get("/health", (_req: Request, res: Response) => {
 // Server start
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Backend running on port ${PORT}`);
-  console.log("CI:", process.env.CI);
+  console.log("GitHub CI mode:", isGitHubCI);
+  console.log("OpenAI configured:", !!openai);
 });
